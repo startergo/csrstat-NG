@@ -2,7 +2,7 @@
  * Created: 23 August 2015
  * Name...: csrstat.c
  * Author.: Pike R. Alpha
- * Edited.: 9 September 2021
+ * Edited.: 30 September 2021
  * Author.: Startergo
  * Purpose: Command line tool for El Capitan and greater to get the active SIP status.
  *
