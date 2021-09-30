@@ -2,8 +2,8 @@
  * Created: 23 August 2015
  * Name...: csrstat.c
  * Author.: Pike R. Alpha
- * Edited.: 10 November 2018
- * Author.: Joss Brown
+ * Edited.: 9 September 2021
+ * Author.: Startergo
  * Purpose: Command line tool for El Capitan and greater to get the active SIP status.
  *
  * Compile with: cc csrstat.c -o csrstat
@@ -12,8 +12,8 @@
  *			-added full flags to output
  *			-added csrutil arguments to output
  *			-added CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE (xnu-4903.221.2)
- *
- * See also: https://github.com/opensource-apple/xnu/blob/master/bsd/sys/csr.h
+ *			-added CSR_ALLOW_UNAUTHENTICATED_ROOT (xnu-7195.50.7.100.1)
+ * See also: https://github.com/apple/darwin-xnu/blob/8f02f2a044b9bb1ad951987ef5bab20ec9486310/bsd/sys/csr.h
  */
 
 #include <time.h>
@@ -41,6 +41,7 @@ csr_config_t config = 0;
 #define CSR_ALLOW_ANY_RECOVERY_OS		(1 << 8)	// 256
 #define CSR_ALLOW_UNAPPROVED_KEXTS		(1 << 9)	// 512
 #define CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE	(1 << 10)	// 1024
+#define CSR_ALLOW_UNAUTHENTICATED_ROOT          (1 << 11)       // 2048
 
 #define CSR_VALID_FLAGS (CSR_ALLOW_UNTRUSTED_KEXTS | \
 	CSR_ALLOW_UNRESTRICTED_FS | \
@@ -52,7 +53,8 @@ csr_config_t config = 0;
 	CSR_ALLOW_DEVICE_CONFIGURATION | \
 	CSR_ALLOW_ANY_RECOVERY_OS | \
 	CSR_ALLOW_UNAPPROVED_KEXTS | \
-	CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE)
+	CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE | \
+	CSR_ALLOW_UNAUTHENTICATED_ROOT)
 
 /* Syscalls */
 extern int csr_get_active_config(csr_config_t *config);
@@ -132,6 +134,7 @@ int main(int argc, const char * argv[])
 	printf("\tBaseSystem Verification\t\t%s\t[--without basesystem]\tCSR_ALLOW_ANY_RECOVERY_OS\n", _csr_check(CSR_ALLOW_ANY_RECOVERY_OS, 1));
 	printf("\tUnapproved Kexts Restrictions\t%s\t<n/a>\t\t\tCSR_ALLOW_UNAPPROVED_KEXTS\n", _csr_check(CSR_ALLOW_UNAPPROVED_KEXTS, 1));
 	printf("\tExecutable Policy\t\t%s\t<n/a>\t\t\tCSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE\n", _csr_check(CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE, 1));
+	printf("\tUnauthenticated Root\t\t%s\t<n/a>\t\t\tCSR_ALLOW_UNAUTHENTICATED_ROOT\n", _csr_check(CSR_ALLOW_UNAUTHENTICATED_ROOT, 1));
 	printf("\nBoot into Recovery Mode and modify with: 'csrutil enable [arguments]'\n");
 	printf("<Note: some flags are not accessible using the csrutil CLI.>\n");
 
