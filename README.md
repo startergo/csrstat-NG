@@ -1,4 +1,4 @@
-Update of Pike R. Alpha's original `csrstat` CLI with support for Mojave's XNU v7195.121.3
+Update of Pike R. Alpha's original `csrstat` CLI with support for Big Sur's XNU v7195.121.3
 
 You can run the csrstat tool by entering:
 ```
