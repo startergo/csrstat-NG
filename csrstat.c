@@ -56,7 +56,19 @@ csr_config_t config = 0;
 	CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE | \
 	CSR_ALLOW_UNAUTHENTICATED_ROOT)
 
+#define CSR_ALWAYS_ENFORCED_FLAGS (CSR_ALLOW_DEVICE_CONFIGURATION | CSR_ALLOW_ANY_RECOVERY_OS)	
+
+/* Flags set by `csrutil disable`. */
+#define CSR_DISABLE_FLAGS (CSR_ALLOW_UNTRUSTED_KEXTS | \
+	                   CSR_ALLOW_UNRESTRICTED_FS | \
+	                   CSR_ALLOW_TASK_FOR_PID | \
+	                   CSR_ALLOW_KERNEL_DEBUGGER | \
+	                   CSR_ALLOW_APPLE_INTERNAL | \
+	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
+	                   CSR_ALLOW_UNRESTRICTED_NVRAM)
+
 /* Syscalls */
+extern int csr_check(csr_config_t mask);
 extern int csr_get_active_config(csr_config_t *config);
 
 //==============================================================================
@@ -131,7 +143,7 @@ int main(int argc, const char * argv[])
 	printf("\tDTrace Restrictions\t\t%s\t[--without dtrace]\tCSR_ALLOW_UNRESTRICTED_DTRACE\n", _csr_check(CSR_ALLOW_UNRESTRICTED_DTRACE, 1));
 	printf("\tNVRAM Protections\t\t%s\t[--without nvram]\tCSR_ALLOW_UNRESTRICTED_NVRAM\n", _csr_check(CSR_ALLOW_UNRESTRICTED_NVRAM, 1));
 	printf("\tDevice Configuration\t\t%s\t<n/a>\t\t\tCSR_ALLOW_DEVICE_CONFIGURATION\n", _csr_check(CSR_ALLOW_DEVICE_CONFIGURATION, 0));
-	printf("\tBaseSystem Verification\t\t%s\t[--without basesystem]\tCSR_ALLOW_ANY_RECOVERY_OS\n", _csr_check(CSR_ALLOW_ANY_RECOVERY_OS, 1));
+	printf("\tBaseSystem Verification\t\t%s\t[--without basesystem]\tCSR_ALLOW_ANY_RECOVERY_OS\n", _csr_check(CSR_ALLOW_ANY_RECOVERY_OS, 0));
 	printf("\tUnapproved Kexts Restrictions\t%s\t<n/a>\t\t\tCSR_ALLOW_UNAPPROVED_KEXTS\n", _csr_check(CSR_ALLOW_UNAPPROVED_KEXTS, 1));
 	printf("\tExecutable Policy\t\t%s\t<n/a>\t\t\tCSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE\n", _csr_check(CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE, 1));
 	printf("\tUnauthenticated Root\t\t%s\t[authenticated-root disable]\tCSR_ALLOW_UNAUTHENTICATED_ROOT\n", _csr_check(CSR_ALLOW_UNAUTHENTICATED_ROOT, 1));
