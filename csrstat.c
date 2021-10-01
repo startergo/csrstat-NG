@@ -151,9 +151,9 @@ int main(int argc, const char * argv[])
 	printf("\nBoot into Recovery Mode and modify with: 'csrutil enable [arguments]' or 'csrutil authenticated-root disable'\n");
 	printf("<Note: some flags are not accessible using the csrutil CLI.>\n");
 
-	if (config && (config == CSR_ALLOW_APPLE_INTERNAL))
+	if (config && (config & CSR_ALLOW_APPLE_INTERNAL))
 	{
-		printf("\nThis is an unsupported configuration, likely to break in the future and leave your machine in an unknown state.\n");
+		printf("\nApple Internal. This is an unsupported configuration, likely to break in the future and leave your machine in an unknown state.\n");
 	}
 	if (text)
 	{
