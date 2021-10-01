@@ -131,7 +131,7 @@ int main(int argc, const char * argv[])
 
 	if (config)
 	{
-		if (config && (CSR_DISABLE_FLAGS | CSR_DISABLE_FLAGS_APPLE))
+		if (config && (CSR_DISABLE_FLAGS || CSR_DISABLE_FLAGS_APPLE))
 		{
 			printf("System Integrity Protection status: disabled.");
 		}
