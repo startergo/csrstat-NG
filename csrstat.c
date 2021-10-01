@@ -67,6 +67,14 @@ csr_config_t config = 0;
 	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
 	                   CSR_ALLOW_UNRESTRICTED_NVRAM)
 
+/* Flags set by `csrutil disable` on Apple devices */
+#define CSR_DISABLE_FLAGS_APPLE (CSR_ALLOW_UNTRUSTED_KEXTS | \
+	                   	CSR_ALLOW_UNRESTRICTED_FS | \
+	                   	CSR_ALLOW_TASK_FOR_PID | \
+	                   	CSR_ALLOW_KERNEL_DEBUGGER | \
+	                   	CSR_ALLOW_UNRESTRICTED_DTRACE | \
+	                   	CSR_ALLOW_UNRESTRICTED_NVRAM)
+
 /* Syscalls */
 extern int csr_check(csr_config_t mask);
 extern int csr_get_active_config(csr_config_t *config);
@@ -123,13 +131,13 @@ int main(int argc, const char * argv[])
 
 	if (config)
 	{
-		if (config >= CSR_DISABLE_FLAGS)
+		if (config && (CSR_DISABLE_FLAGS | CSR_DISABLE_FLAGS_APPLE))
 		{
 			printf("System Integrity Protection status: disabled.");
 		}
 		else
 		{
-			printf("(Custom Configuration).");
+			printf("System Integrity Protection status: unknown. Custom Configuration.");
 		}
 	}
 
