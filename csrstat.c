@@ -119,11 +119,11 @@ int main(int argc, const char * argv[])
 	//
 	// Note: boot.efi is no longer using 0x67 but 0x77 for csrutil disabled!!!
 	//
-	printf("System Integrity Protection status: %s (0x%08x) ", (config == CSR_VALID_FLAGS) ? "\33[1mdisabled\33[0m": "enabled", config);
+	printf("System Integrity Protection status: (0x%08x) ", config);
 
 	if (config)
 	{
-		if (config == CSR_ALLOW_APPLE_INTERNAL)
+		if (config >= CSR_DISABLE_FLAGS)
 		{
 			printf("(Apple Internal).");
 		}
