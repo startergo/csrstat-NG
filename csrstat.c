@@ -56,9 +56,9 @@ csr_config_t config = 0;
 	CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE | \
 	CSR_ALLOW_UNAUTHENTICATED_ROOT)
 
-#define CSR_ALWAYS_ENFORCED_FLAGS (CSR_ALLOW_DEVICE_CONFIGURATION | CSR_ALLOW_ANY_RECOVERY_OS)	
+#define CSR_ALWAYS_ENFORCED_FLAGS (CSR_ALLOW_DEVICE_CONFIGURATION | CSR_ALLOW_ANY_RECOVERY_OS)
 
-/* Flags set by `csrutil disable`. */
+	/* Flags set by `csrutil disable`. */
 #define CSR_DISABLE_FLAGS (CSR_ALLOW_UNTRUSTED_KEXTS | \
 	                   CSR_ALLOW_UNRESTRICTED_FS | \
 	                   CSR_ALLOW_TASK_FOR_PID | \
@@ -119,7 +119,7 @@ int main(int argc, const char * argv[])
 	//
 	// Note: boot.efi is no longer using 0x67 but 0x77 for csrutil disabled!!!
 	//
-	printf("System Integrity Protection status: (0x%08x) ", config);
+	printf("System Integrity Protection status: (0x%08x) " , config);
 
 	if (config)
 	{
@@ -147,7 +147,7 @@ int main(int argc, const char * argv[])
 	printf("\tUnapproved Kexts Restrictions\t%s\t<n/a>\t\t\tCSR_ALLOW_UNAPPROVED_KEXTS\n", _csr_check(CSR_ALLOW_UNAPPROVED_KEXTS, 1));
 	printf("\tExecutable Policy\t\t%s\t<n/a>\t\t\tCSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE\n", _csr_check(CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE, 1));
 	printf("\tUnauthenticated Root\t\t%s\t[authenticated-root disable]\tCSR_ALLOW_UNAUTHENTICATED_ROOT\n", _csr_check(CSR_ALLOW_UNAUTHENTICATED_ROOT, 1));
-	printf("\nBoot into Recovery Mode and modify with: 'csrutil enable [arguments]'\n");
+	printf("\nBoot into Recovery Mode and modify with: 'csrutil enable [arguments]' or 'csrutil authenticated-root disable'\n");
 	printf("<Note: some flags are not accessible using the csrutil CLI.>\n");
 
 	if (config && (config != CSR_ALLOW_APPLE_INTERNAL))
