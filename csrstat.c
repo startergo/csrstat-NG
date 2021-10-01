@@ -135,11 +135,12 @@ int main(int argc, const char * argv[])
 
 	printf("\n\nCurrent Configuration:\n");
 
-	printf("\tApple Internal\t\t\t%s\t[--no-internal]\t\tCSR_ALLOW_APPLE_INTERNAL\n", _csr_check(CSR_ALLOW_APPLE_INTERNAL, 0));
+
 	printf("\tKext Signing\t\t\t%s\t[--without kext]\tCSR_ALLOW_UNTRUSTED_KEXTS\n", _csr_check(CSR_ALLOW_UNTRUSTED_KEXTS, 1));
-	printf("\tDebugging Restrictions\t\t%s\t[--without debug]\tCSR_ALLOW_TASK_FOR_PID\n", _csr_check(CSR_ALLOW_TASK_FOR_PID, 1));
 	printf("\tFilesystem Protections\t\t%s\t[--without fs]\t\tCSR_ALLOW_UNRESTRICTED_FS\n", _csr_check(CSR_ALLOW_UNRESTRICTED_FS, 1));
+	printf("\tDebugging Restrictions\t\t%s\t[--without debug]\tCSR_ALLOW_TASK_FOR_PID\n", _csr_check(CSR_ALLOW_TASK_FOR_PID, 1));
 	printf("\tKernel Debugging Restrictions\t%s\t<n/a>\t\t\tCSR_ALLOW_KERNEL_DEBUGGER\n", _csr_check(CSR_ALLOW_KERNEL_DEBUGGER, 1));
+	printf("\tApple Internal\t\t\t%s\t[--no-internal]\t\tCSR_ALLOW_APPLE_INTERNAL\n", _csr_check(CSR_ALLOW_APPLE_INTERNAL, 0));
 	printf("\tDTrace Restrictions\t\t%s\t[--without dtrace]\tCSR_ALLOW_UNRESTRICTED_DTRACE\n", _csr_check(CSR_ALLOW_UNRESTRICTED_DTRACE, 1));
 	printf("\tNVRAM Protections\t\t%s\t[--without nvram]\tCSR_ALLOW_UNRESTRICTED_NVRAM\n", _csr_check(CSR_ALLOW_UNRESTRICTED_NVRAM, 1));
 	printf("\tDevice Configuration\t\t%s\t<n/a>\t\t\tCSR_ALLOW_DEVICE_CONFIGURATION\n", _csr_check(CSR_ALLOW_DEVICE_CONFIGURATION, 0));
