@@ -82,7 +82,7 @@ csr_config_t config = 0;
 	                   CSR_ALLOW_KERNEL_DEBUGGER | \
 	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
 	                   CSR_ALLOW_UNRESTRICTED_NVRAM | \
-						CSR_ALLOW_UNAPPROVED_KEXTS)
+			   CSR_ALLOW_UNAPPROVED_KEXTS)
 
 /* Flags set by `0x00000A6f`. */
 #define CSR_DISABLE_FLAGS_A6F (CSR_ALLOW_UNTRUSTED_KEXTS | \
@@ -91,8 +91,8 @@ csr_config_t config = 0;
 	                   CSR_ALLOW_KERNEL_DEBUGGER | \
 	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
 	                   CSR_ALLOW_UNRESTRICTED_NVRAM | \
-						CSR_ALLOW_UNAPPROVED_KEXTS  | \
-						CSR_ALLOW_UNAUTHENTICATED_ROOT)
+			   CSR_ALLOW_UNAPPROVED_KEXTS  | \
+			   CSR_ALLOW_UNAUTHENTICATED_ROOT)
 
 /* Syscalls */
 extern int csr_check(csr_config_t mask);
