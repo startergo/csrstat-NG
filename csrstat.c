@@ -75,6 +75,25 @@ csr_config_t config = 0;
 	                   	CSR_ALLOW_UNRESTRICTED_DTRACE | \
 	                   	CSR_ALLOW_UNRESTRICTED_NVRAM)
 
+/* Flags set by `0x0000026f`. */
+#define CSR_DISABLE_FLAGS_26F (CSR_ALLOW_UNTRUSTED_KEXTS | \
+	                   CSR_ALLOW_UNRESTRICTED_FS | \
+	                   CSR_ALLOW_TASK_FOR_PID | \
+	                   CSR_ALLOW_KERNEL_DEBUGGER | \
+	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
+	                   CSR_ALLOW_UNRESTRICTED_NVRAM | \
+						CSR_ALLOW_UNAPPROVED_KEXTS)
+
+/* Flags set by `0x00000A6f`. */
+#define CSR_DISABLE_FLAGS_A6F (CSR_ALLOW_UNTRUSTED_KEXTS | \
+	                   CSR_ALLOW_UNRESTRICTED_FS | \
+	                   CSR_ALLOW_TASK_FOR_PID | \
+	                   CSR_ALLOW_KERNEL_DEBUGGER | \
+	                   CSR_ALLOW_UNRESTRICTED_DTRACE | \
+	                   CSR_ALLOW_UNRESTRICTED_NVRAM | \
+						CSR_ALLOW_UNAPPROVED_KEXTS  | \
+						CSR_ALLOW_UNAUTHENTICATED_ROOT)
+
 /* Syscalls */
 extern int csr_check(csr_config_t mask);
 extern int csr_get_active_config(csr_config_t *config);
@@ -127,17 +146,29 @@ int main(int argc, const char * argv[])
 	//
 	// Note: boot.efi is no longer using 0x67 but 0x77 for csrutil disabled!!!
 	//
-	printf("System Integrity Protection status: (0x%08x) " , config);
+	printf("System Integrity Protection value: (0x%08x) " , config);
 
 	if (config)
 	{
-		if (config && (CSR_DISABLE_FLAGS || CSR_DISABLE_FLAGS_APPLE))
+		if (config == CSR_DISABLE_FLAGS_APPLE)
 		{
-			printf("System Integrity Protection status: disabled.");
+			printf("System Integrity Protection status: disabled");
 		}
-		else
+		else if (config == CSR_DISABLE_FLAGS)
 		{
-			printf("System Integrity Protection status: unknown. Custom Configuration.");
+			printf("System Integrity Protection status: disabled");
+		}
+		else if (config == CSR_DISABLE_FLAGS_26F)
+		{
+			printf("System Integrity Protection status: disabled");	
+		}
+		else if (config == CSR_DISABLE_FLAGS_A6F)
+		{
+			printf("System Integrity Protection status: disabled");	
+		}
+		else 
+		{
+			printf("System Integrity Protection status: unknown (Custom Configuration).");
 		}
 	}
 
@@ -158,6 +189,8 @@ int main(int argc, const char * argv[])
 	printf("\tUnauthenticated Root\t\t%s\t[authenticated-root disable]\tCSR_ALLOW_UNAUTHENTICATED_ROOT\n", _csr_check(CSR_ALLOW_UNAUTHENTICATED_ROOT, 1));
 	printf("\nBoot into Recovery Mode and modify with: 'csrutil enable [arguments]' or 'csrutil authenticated-root disable'\n");
 	printf("<Note: some flags are not accessible using the csrutil CLI.>\n");
+	
+
 
 	if (config && (config & CSR_ALLOW_APPLE_INTERNAL))
 	{
