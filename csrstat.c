@@ -182,8 +182,8 @@ int main(int argc, const char * argv[])
 	printf("\tApple Internal\t\t\t%s\t[--no-internal]\t\tCSR_ALLOW_APPLE_INTERNAL\n", _csr_check(CSR_ALLOW_APPLE_INTERNAL, 0));
 	printf("\tDTrace Restrictions\t\t%s\t[--without dtrace]\tCSR_ALLOW_UNRESTRICTED_DTRACE\n", _csr_check(CSR_ALLOW_UNRESTRICTED_DTRACE, 1));
 	printf("\tNVRAM Protections\t\t%s\t[--without nvram]\tCSR_ALLOW_UNRESTRICTED_NVRAM\n", _csr_check(CSR_ALLOW_UNRESTRICTED_NVRAM, 1));
-	printf("\tDevice Configuration\t\t%s\t<n/a>\t\t\tCSR_ALLOW_DEVICE_CONFIGURATION\n", _csr_check(CSR_ALLOW_DEVICE_CONFIGURATION, 0));
-	printf("\tBaseSystem Verification\t\t%s\t[--without basesystem]\tCSR_ALLOW_ANY_RECOVERY_OS\n", _csr_check(CSR_ALLOW_ANY_RECOVERY_OS, 0));
+	printf("\tDevice Configuration\t\t%s\t<n/a>\t\t\tCSR_ALLOW_DEVICE_CONFIGURATION\n", _csr_check(CSR_ALLOW_DEVICE_CONFIGURATION, 1));
+	printf("\tBaseSystem Verification\t\t%s\t[--without basesystem]\tCSR_ALLOW_ANY_RECOVERY_OS\n", _csr_check(CSR_ALLOW_ANY_RECOVERY_OS, 1));
 	printf("\tUnapproved Kexts Restrictions\t%s\t<n/a>\t\t\tCSR_ALLOW_UNAPPROVED_KEXTS\n", _csr_check(CSR_ALLOW_UNAPPROVED_KEXTS, 1));
 	printf("\tExecutable Policy\t\t%s\t<n/a>\t\t\tCSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE\n", _csr_check(CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE, 1));
 	printf("\tUnauthenticated Root\t\t%s\t[authenticated-root disable]\tCSR_ALLOW_UNAUTHENTICATED_ROOT\n", _csr_check(CSR_ALLOW_UNAUTHENTICATED_ROOT, 1));
