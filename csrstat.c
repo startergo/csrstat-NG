@@ -4,7 +4,7 @@
  * Author.: Pike R. Alpha
  * Edited.: 30 September 2021
  * Author.: Startergo
- * Purpose: Command line tool for El Capitan and greater to get the active SIP status.
+ * Purpose: Command line tool for Big Sur to get the active SIP status.
  *
  * Compile with: cc csrstat.c -o csrstat
  *
