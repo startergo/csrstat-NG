@@ -6,7 +6,7 @@ You can run the csrstat tool by entering:
 ```
 Here's an example of the output (latest version):
 ```
-csrstat v2.0 Copyright (c) 2015-2017 by Pike R. Alpha, 2017-2018 by Joss Brown 2021 by Startergo
+csrstat v2.0 Copyright (c) 2015-2017 by Pike R. Alpha, 2017-2018 by Joss Brown, 2021 by Startergo
 System Integrity Protection status: enabled (0x00000000)
 
 Current Configuration:
