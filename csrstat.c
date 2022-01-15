@@ -156,7 +156,7 @@ int main(int argc, const char * argv[])
 		}
 		else if (config == CSR_DISABLE_FLAGS)
 		{
-			printf("System Integrity Protection status: disabled");
+			printf("System Integrity Protection status: disabled (Apple Internal)");
 		}
 		else if (config == CSR_DISABLE_FLAGS_26F)
 		{
