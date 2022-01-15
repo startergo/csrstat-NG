@@ -35,9 +35,9 @@ csr_config_t config = 0;
 #define CSR_ALLOW_TASK_FOR_PID			(1 << 2)	// 4
 #define CSR_ALLOW_KERNEL_DEBUGGER		(1 << 3)	// 8
 #define CSR_ALLOW_APPLE_INTERNAL		(1 << 4)	// 16
-#define CSR_ALLOW_UNRESTRICTED_DTRACE	(1 << 5)	// 32
-#define CSR_ALLOW_UNRESTRICTED_NVRAM	(1 << 6)	// 64
-#define CSR_ALLOW_DEVICE_CONFIGURATION	(1 << 7)	// 128
+#define CSR_ALLOW_UNRESTRICTED_DTRACE		(1 << 5)	// 32 /* name deprecated */
+#define CSR_ALLOW_UNRESTRICTED_NVRAM		(1 << 6)	// 64
+#define CSR_ALLOW_DEVICE_CONFIGURATION		(1 << 7)	// 128
 #define CSR_ALLOW_ANY_RECOVERY_OS		(1 << 8)	// 256
 #define CSR_ALLOW_UNAPPROVED_KEXTS		(1 << 9)	// 512
 #define CSR_ALLOW_EXECUTABLE_POLICY_OVERRIDE	(1 << 10)	// 1024
