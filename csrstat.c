@@ -58,7 +58,7 @@ csr_config_t config = 0;
 
 #define CSR_ALWAYS_ENFORCED_FLAGS (CSR_ALLOW_DEVICE_CONFIGURATION | CSR_ALLOW_ANY_RECOVERY_OS)
 
-	/* Flags set by `csrutil disable`. */
+	/* Flags set by `csrutil disable`. 0x0000007F */
 #define CSR_DISABLE_FLAGS (CSR_ALLOW_UNTRUSTED_KEXTS | \
 	CSR_ALLOW_UNRESTRICTED_FS | \
 	CSR_ALLOW_TASK_FOR_PID | \
@@ -67,7 +67,7 @@ csr_config_t config = 0;
 	CSR_ALLOW_UNRESTRICTED_DTRACE | \
 	CSR_ALLOW_UNRESTRICTED_NVRAM)
 
-/* Flags set by `csrutil disable` on Apple devices */
+/* Flags set by `csrutil disable` at boot on Apple public devices. 0x0000006f */
 #define CSR_DISABLE_FLAGS_APPLE (CSR_ALLOW_UNTRUSTED_KEXTS | \
 	CSR_ALLOW_UNRESTRICTED_FS | \
 	CSR_ALLOW_TASK_FOR_PID | \
