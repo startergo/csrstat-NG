@@ -19,6 +19,13 @@ cc csrstat.c -o csrstat
 
 # If you encounter SDK issues on ARM64 systems:
 cc -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk csrstat.c -o csrstat
+
+# Cross-compile for specific architecture:
+cc -arch x86_64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk csrstat.c -o csrstat-x86_64
+cc -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk csrstat.c -o csrstat-arm64
+
+# Universal binary (works on both Intel and Apple Silicon):
+cc -arch arm64 -arch x86_64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk csrstat.c -o csrstat-universal
 ```
 
 ## Usage
@@ -31,8 +38,14 @@ cc -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk csrstat.c -o cs
 
 ```
 csrstat v2.0 Copyright (c) 2015-2017 by Pike R. Alpha, 2017-2025 by Joss Brown, 2021-2025 by Startergo
+Enhanced with accurate SIP analysis based on Khronokernel research
+Reference: https://github.com/khronokernel/What-is-SIP
+
+✅ Successfully queried SIP status via csr_get_active_config()
 System Integrity Protection value: (0x0000006f)
-System Integrity Protection status: disabled
+System Integrity Protection status: disabled (Recovery Mode)
+Configuration Method: Recovery Mode 'csrutil disable'
+Note: This is the standard disabled configuration on retail hardware
 
 Current Configuration:
         Kext Signing                    1 (disabled)    [--without kext]
@@ -49,19 +62,25 @@ Current Configuration:
         Unauthenticated Root            0 (enabled)     [authenticated-root disable]
 
 ======================================================
+Enhanced SIP Capability Analysis:
+======================================================
+🔐 Root Filesystem Modification: ✅ ALLOWED
+🔧 Unsigned Kext Loading: ✅ ALLOWED  
+🐛 Kernel Debugging: ✅ ALLOWED
+💾 NVRAM/Device Tree Modification: ✅ ALLOWED
+🍎 Apple Internal Status: ✅ NORMAL (expected on retail hardware)
+
+======================================================
 Third-Party Kext Loading Analysis:
 ======================================================
 ⚠️  SIP Status: PARTIAL - Untrusted kexts allowed (0x0000006f)
 ✅ Signed third-party kexts: ALLOWED
 ✅ Kext loading: SHOULD WORK (if properly signed)
 
-🔍 Additional Boot Arguments for Unsigned Kexts:
-   kext-dev-mode=1  (allows loading of unsigned/untrusted kexts)
-
 📋 Recommended SIP Configurations for Third-Party Kexts:
    • SECURE:     csrutil enable --without kext      (0x00000001)
    • BALANCED:   csrutil enable --without kext --without debug (0x00000005)
-   • PERMISSIVE: csrutil disable                     (0x0000006f, excludes always-enforced/internal flags)
+   • PERMISSIVE: csrutil disable                     (0x0000006f on retail hardware)
 ```
 
 ## Key Improvements
@@ -88,7 +107,49 @@ Third-Party Kext Loading Analysis:
 
 ## Technical Notes
 
-Please note that csrstat reads the active SIP configuration directly from the kernel via syscall, not from the NVRAM variable (csr-active-config), as it should. The NVRAM variable is only applied after a reboot.
+### CSR Configuration Storage by Architecture
+
+Based on Apple's XNU kernel source analysis:
+
+- **Intel Systems**: Configuration stored in NVRAM variable `csr-active-config` and read via boot arguments
+- **Apple Silicon**: Configuration read via `lp-sip0` entry in the Device Tree (`lp-sip1`, `lp-sip2` for additional flags) under `/chosen/asmb` - **NO NVRAM usage**
+
+The kernel code shows this clearly:
+```c
+// Apple Silicon - Device Tree lookup
+if (SecureDTLookupEntry(0, "/chosen/asmb", &entry) == kSuccess &&
+    _csr_get_dt_uint64(&entry, "lp-sip0", &uint64_value)) {
+    csr_config = (uint32_t)uint64_value;    // Currently only 32 bits used.
+    config_active = true;
+}
+```
+
+### Dynamic Kernel Behavior
+
+The kernel includes sophisticated logic that dynamically enables `CSR_ALLOW_KERNEL_DEBUGGER` when other debugging flags are present:
+
+```c
+// From XNU kernel source
+if ((config & (CSR_ALLOW_UNTRUSTED_KEXTS | CSR_ALLOW_APPLE_INTERNAL)) != 0) {
+    config |= CSR_ALLOW_KERNEL_DEBUGGER;
+}
+```
+
+This explains why kernel debugging appears enabled even when not explicitly set.
+
+### Apple Internal Bit Handling
+
+On retail hardware, the kernel automatically strips the Apple Internal bit:
+
+```c
+if (!_csr_is_iuou_or_iuos_device()) {
+    csr_config &= ~CSR_ALLOW_APPLE_INTERNAL;
+}
+```
+
+### Active Configuration Reading
+
+csrstat reads the active SIP configuration directly from the kernel via syscall (`csr_get_active_config`), not from the stored configuration sources. The stored values (NVRAM on Intel, Device Tree on Apple Silicon) are only applied during boot and after a reboot.
 
 ## Version History
 
@@ -102,7 +163,9 @@ Please note that csrstat reads the active SIP configuration directly from the ke
 - **Original Author**: Pike R. Alpha (2015-2017)
 - **Enhanced by**: Joss Brown (2017-2018)  
 - **Further Enhanced by**: Startergo (2021-2025)
-- **Apple XNU Reference**: [Darwin XNU Kernel Source](https://github.com/apple/darwin-xnu/blob/main/bsd/sys/csr.h)
+- **Kernel Source Research**: Analysis based on Apple's XNU kernel implementation
+- **SIP Research Reference**: [Khronokernel's SIP Documentation](https://github.com/khronokernel/What-is-SIP)
+- **Apple XNU Reference**: [Darwin XNU Kernel Source](https://github.com/apple-oss-distributions/xnu)
 
 ## License
 
